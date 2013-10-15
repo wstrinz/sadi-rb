@@ -9,7 +9,7 @@ or clone the repository and run `rake install` for the latest version
 
 ### Description
 
-Write [SADI] Services in Ruby, using [ruby-rdf], then host them as a [Sinatra] server.
+Write [SADI] Services in Ruby, using [ruby-rdf], then host them as a [Sinatra] application.
 
 Currently only support for [synchronous] services is implemented.
 
