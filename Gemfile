@@ -18,4 +18,9 @@ end
 
 gem 'sinatra'
 gem 'sinatra-linkeddata'
+
 gem 'equivalent-xml', :require => false
+
+platforms :ruby do
+  gem 'thin'
+end
