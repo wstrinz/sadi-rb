@@ -1,6 +1,10 @@
 class ExampleService
   extend SADI::SynchronousService
   class << self
+    def service_name
+      "hello"
+    end
+
     def service_description
       str = <<-EOS
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -71,7 +75,6 @@ foaf:name a owl:DatatypeProperty;
     def process_object(in_graph, object)
       out_graph = RDF::Graph.new
 
-      # obj = input_objects(in_graph).first
       name = RDF::Query.execute(in_graph) do
         pattern [object, RDF::FOAF.name, :name]
       end

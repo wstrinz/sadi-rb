@@ -6,6 +6,7 @@ module SADI
         raise "Unknown input format #{mime_type}" unless format
         format = format.to_sym
       end
+
       RDF::Graph.new << RDF::Reader.for(format).new(string)
     end
   end

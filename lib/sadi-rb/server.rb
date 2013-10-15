@@ -5,10 +5,6 @@ module SADI
   class Server < Sinatra::Base
     register Sinatra::LinkedData
 
-    get '/test' do
-      "test success"
-    end
-
     get '/services/:service' do
       get_description(params[:service])
     end
@@ -27,13 +23,14 @@ module SADI
         repo
       end
 
-
       def handle_synchronous(service)
-        rdf_response ExampleService.process_input(request.body.read,request.content_type)
+        svc = SADI.service_for(service)
+        rdf_response svc.process_input(request.body.read,request.content_type)
       end
 
       def get_description(service)
-        ExampleService.service_description
+        svc = SADI.service_for(service)
+        svc.service_description
       end
     end
   end

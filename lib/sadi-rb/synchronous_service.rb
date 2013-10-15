@@ -2,6 +2,20 @@ module SADI
   module SynchronousService
     include SADI::Converter
 
+    def self.included(base)
+      @classes ||= []
+      @classes << base
+    end
+
+    def self.extended(base)
+      @classes ||= []
+      @classes << base
+    end
+
+    def self.classes
+      @classes
+    end
+
     def process_input(input, format)
       gr = RDF::Graph.new
       in_graph = parse_string(input,format)
@@ -53,6 +67,10 @@ module SADI
 
     def process_object(owl_graph, object)
       raise "Must implement a #process_input that takes an RDF::Graph or Repository as input and returns a new one"
+    end
+
+    def service_name
+      raise "Must define a service name"
     end
   end
 end
