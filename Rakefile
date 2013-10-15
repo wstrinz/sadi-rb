@@ -22,7 +22,7 @@ Jeweler::Tasks.new do |gem|
   gem.email = "wstrinz@gmail.com"
   # gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
   gem.authors = ["Will Strinz"]
-  gem.version = '0.0.1'
+  gem.version = '0.0.2'
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
