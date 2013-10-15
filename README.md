@@ -1,5 +1,7 @@
 # sadi-rb
 
+[![Build Status](https://travis-ci.org/wstrinz/sadi-rb.png?branch=master)](https://travis-ci.org/wstrinz/sadi-rb)
+
 ### Installation
 `gem install sadi-rb`
 
