@@ -36,7 +36,5 @@ module SADI
         ExampleService.service_description
       end
     end
-
-    run! if app_file == $0
   end
 end
