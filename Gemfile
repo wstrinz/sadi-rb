@@ -10,5 +10,12 @@ group :development do
   gem "rdoc", "~> 3.12"
   gem "bundler", "~> 1.0"
   gem "jeweler", "~> 1.8.7"
-  gem "rcov", ">= 0"
+  # gem "rcov", ">= 0"
+  gem "rspec" #, ">= 0"
+  gem "rack-test" #, ">= 0"
+  gem 'pry'
 end
+
+gem 'sinatra'
+gem 'sinatra-linkeddata'
+gem 'equivalent-xml', :require => false
