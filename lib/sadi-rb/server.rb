@@ -5,6 +5,15 @@ module SADI
   class Server < Sinatra::Base
     register Sinatra::LinkedData
 
+    configure do
+      enable :inline_templates
+    end
+
+    get '/' do
+      # "This is a SADI "
+      haml :index
+    end
+
     get '/services/:service' do
       get_description(params[:service])
     end
@@ -25,13 +34,27 @@ module SADI
 
       def handle_synchronous(service)
         svc = SADI.service_for(service)
+        raise "no service exists with name '#{service}'" unless svc
         rdf_response svc.process_input(request.body.read,request.content_type)
       end
 
       def get_description(service)
         svc = SADI.service_for(service)
+        raise "no service exists with name '#{service}'" unless svc
         svc.service_description
+      end
+
+      def service_list
+        SADI.services.keys.map{|k| "<a href=\"/services/#{k}\"> #{k} </a>"}.join("<br>")
       end
     end
   end
 end
+
+__END__
+
+@@ index
+%h1 This is a SADI Server
+
+%div
+  = "Available services are: <br> #{service_list}"

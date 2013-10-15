@@ -20,6 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Build and run SADI services with ruby-rdf and sinatra}
   gem.description = %Q{Build and run SADI services with ruby-rdf and sinatra}
   gem.email = "wstrinz@gmail.com"
+  # gem.executables   = gem.files.grep(%r{^bin/}) { |f| File.basename(f) }
   gem.authors = ["Will Strinz"]
   gem.version = '0.0.1'
   # dependencies defined in Gemfile
