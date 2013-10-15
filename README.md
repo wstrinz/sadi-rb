@@ -33,19 +33,19 @@ require 'sadi-rb'
 Class MyService
   extend SADI::SynchronousService
 
-  def service_name
+  def self.service_name
     "my_service_name"
   end
 
-  def service_description
+  def self.service_description
     # an RDF::Graph of your service's description
   end
 
-  def service_owl
+  def self.service_owl
     # an RDF::Graph of your service's OWL classes
   end
 
-  def process_object(input_graph, owl_object)
+  def self.process_object(input_graph, owl_object)
     # Service logic goes here
 
     # Should return an RDF::Graph of
