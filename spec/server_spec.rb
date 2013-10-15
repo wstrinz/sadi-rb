@@ -43,7 +43,7 @@ describe SADI::Server do
 
     it "returns output on post" do
       header "Accept", "text/turtle"
-      header "Content-Type", "application/rdf+xml"
+      header "Content-type", "application/rdf+xml"
 
       post '/services/hello', sample_input
 
@@ -66,7 +66,7 @@ describe SADI::Server do
       end
     end
 
-    %w{text/turtle application/ld+json}.each do |format|
+    %w{text/turtle application/ld+json application/json}.each do |format|
       describe "accepts #{format}" do
         it {
           header "Accept", format

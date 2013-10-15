@@ -32,7 +32,7 @@ To create a [synchronous] service, simply extend the `SADI::SynchronousService` 
 ```ruby
 require 'sadi-rb'
 
-Class MyService
+class MyService
   extend SADI::SynchronousService
 
   def self.service_name
@@ -58,6 +58,8 @@ end
 ```
 
 Although SADI can theoretically use any vocabulary for its service description, the gem internals currently require that you use the [mygrid ontology] in implementing your `service_description` method.
+
+You also have access to `parse_string(string, format)` method, inherited from [SADI::Converter](https://github.com/wstrinz/sadi-rb/blob/master/lib/sadi-rb/converter.rb) through `SADI::SynchronousService`, which can be used create a RDF::Graph from a serialized string. The `format` argument should be a symbol for an `RDF::Format` class, for example `:ttl` or `:rdfxml'.
 
 ## Contributing to sadi-rb
 
