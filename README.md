@@ -7,9 +7,9 @@ or clone the repository and run `rake install` for the latest version
 
 ### Description
 
-Write [SADI] Services in Ruby, then host them as a Sinatra server
+Write [SADI] Services in Ruby, using [ruby-rdf], then host them as a [Sinatra] server.
 
-Currently only supports [synchronous] service have been implemented.
+Currently only support for [synchronous] services is implemented.
 
 ### Usage
 
@@ -25,35 +25,37 @@ SADI::Server.run!
 
 ### Writing your own services
 
-To create an asynchronous service, simply extend the `SADI::SynchronousService` module and implement the interface methods it requires;
+To create a [synchronous] service, simply extend the `SADI::SynchronousService` module and implement the interface methods it requires;
 
 ```ruby
 require 'sadi-rb'
 
 Class MyService
-    def service_name
-        "my_service_name"
-    end
+  extend SADI::SynchronousService
 
-    def service_description
-        # an RDF::Graph of your service's description
-    end
+  def service_name
+    "my_service_name"
+  end
 
-    def service_owl
-        # an RDF::Graph of your service's OWL classes
-    end
+  def service_description
+    # an RDF::Graph of your service's description
+  end
 
-    def process_object(input_graph, owl_object)
-        # Service logic goes here
+  def service_owl
+    # an RDF::Graph of your service's OWL classes
+  end
 
-        # Should return an RDF::Graph of
-        #   the output for the resource specified by the URI owl_object,
-        #   from the RDF::Graph input_graph
-    end
+  def process_object(input_graph, owl_object)
+    # Service logic goes here
+
+    # Should return an RDF::Graph of
+    #   the output for the resource specified by the URI owl_object,
+    #   from the RDF::Graph input_graph
+  end
 end
 ```
 
-Although SADI can theoretically use any vocabulary for its service description, the gem internals currently require that you use the [mygrid ontology] in implementing your `service_description` method
+Although SADI can theoretically use any vocabulary for its service description, the gem internals currently require that you use the [mygrid ontology] in implementing your `service_description` method.
 
 ## Contributing to sadi-rb
 
@@ -70,6 +72,9 @@ Although SADI can theoretically use any vocabulary for its service description, 
 Copyright (c) 2013 Will Strinz. See LICENSE.txt for
 further details.
 
-[demo service]: http://sadiframework.org/content/how-sadi-works/synchronous-sadi-services/
+[synchronous]: http://sadiframework.org/content/how-sadi-works/synchronous-sadi-services/
+[demo service]: http://sadiframework.org/examples/hello
 [SADI]: http://sadiframework.org
 [mygrid ontology]: http://www.mygrid.org.uk/tools/service-management/mygrid-ontology/
+[ruby-rdf]: http://ruby-rdf.github.io/
+[Sinatra]: http://www.sinatrarb.com/
