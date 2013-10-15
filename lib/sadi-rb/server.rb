@@ -55,6 +55,15 @@ module SADI
         .join('<br>')
       end
     end
+
+    class << self
+      alias_method :base_run!, :run!
+
+      def run!
+        SADI.reload_services
+        base_run!
+      end
+    end
   end
 end
 

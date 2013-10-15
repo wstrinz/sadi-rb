@@ -78,4 +78,39 @@ describe SADI::Server do
       end
     end
   end
+
+  describe "define new classes" do
+    before do
+      @serv = Class.new do
+        extend SADI::SynchronousService
+
+        def self.service_name
+          "my_service_name" # => service will be accessible at "/services/my_service_name"
+        end
+
+        def self.service_description
+          # an RDF::Graph of your service's description
+        end
+
+        def self.service_owl
+          # an RDF::Graph of your service's OWL classes
+        end
+
+        def self.process_object(input_graph, owl_object)
+          # Service logic goes here
+
+          # Should return an RDF::Graph of
+          #   the output for the resource specified by the URI owl_object,
+          #   from the RDF::Graph input_graph
+        end
+      end
+
+      SADI.reload_services
+    end
+
+    it {
+      get 'services/my_service_name'
+      last_response.should be_ok
+    }
+  end
 end

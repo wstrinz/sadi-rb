@@ -1,6 +1,5 @@
 module SADI
   class << self
-
     def service_for(name)
       services[name]
     end
