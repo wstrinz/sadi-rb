@@ -47,6 +47,13 @@ module SADI
       def service_list
         SADI.services.keys.map{|k| "<a href=\"/services/#{k}\"> #{k} </a>"}.join("<br>")
       end
+
+      def format_list
+        RDF::Format.each.to_a.uniq{|f| f.content_type}
+        .reject{|f| f.content_type.size == 0}
+        .map{|f| "#{f.content_type} (#{f.to_sym})"}
+        .join('<br>')
+      end
     end
   end
 end
@@ -54,7 +61,18 @@ end
 __END__
 
 @@ index
-%h1 This is a SADI Server
+%h1
+  This is a
+  %a{href: 'http://sadiframework.org'} SADI
+  Server
 
 %div
-  = "Available services are: <br> #{service_list}"
+  %strong Available services are: <br>
+  = service_list
+
+%br
+%br
+
+%div
+  %strong Valid RDF formats are: <br>
+  = "#{format_list}"
