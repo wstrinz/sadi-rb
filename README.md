@@ -34,7 +34,7 @@ Class MyService
   extend SADI::SynchronousService
 
   def self.service_name
-    "my_service_name"
+    "my_service_name" # => service will be accessible at "/services/my_service_name"
   end
 
   def self.service_description
