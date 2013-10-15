@@ -13,7 +13,7 @@ Currently only support for [synchronous] services is implemented.
 
 ### Usage
 
-To test the server, use the gem's executable `sadi-rb`. This will start the server on [http://localhost:4567](http://localhost:4567), and load the [demo service].
+To test the server, use the gem's executable `sadi-rb`. This will start the server on [http://localhost:4567](http://localhost:4567), and load the [demo service], which is based on the service at [http://sadiframework.org/examples/hello](http://sadiframework.org/examples/hello).
 
 The server can also be run as part of a script using
 
@@ -73,7 +73,7 @@ Copyright (c) 2013 Will Strinz. See LICENSE.txt for
 further details.
 
 [synchronous]: http://sadiframework.org/content/how-sadi-works/synchronous-sadi-services/
-[demo service]: http://sadiframework.org/examples/hello
+[demo service]: https://github.com/wstrinz/sadi-rb/blob/master/lib/sadi-rb/example_service.rb
 [SADI]: http://sadiframework.org
 [mygrid ontology]: http://www.mygrid.org.uk/tools/service-management/mygrid-ontology/
 [ruby-rdf]: http://ruby-rdf.github.io/
