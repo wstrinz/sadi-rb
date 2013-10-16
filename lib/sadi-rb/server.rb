@@ -20,7 +20,7 @@ module SADI
 
 
     post '/services/:service' do
-      handle_synchronous(params[:service])
+      handle_post(params[:service])
     end
 
     get '/poll/:service/:job' do
@@ -37,10 +37,14 @@ module SADI
         repo
       end
 
-      def handle_synchronous(service)
+      def handle_post(service)
         svc = SADI.service_for(service)
         raise "no service exists with name '#{service}'" unless svc
-        rdf_response svc.process_input(request.body.read,request.content_type)
+        if svc.is_a? SynchronousService
+          rdf_response svc.process_input(request.body.read,request.content_type)
+        else
+          raise "process async"
+        end
       end
 
       def get_description(service)
@@ -61,6 +65,17 @@ module SADI
       end
 
       def poll_service(service, job)
+        svc = SADI.service_for(service)
+        result = svc.poll(job)
+        if result.is_a?(RDF::Graph) || result.is_a?(RDF::Repository)
+          result
+        else
+          redirect_poll(svc, job)
+        end 
+      end
+
+      def redirect_poll
+        "Hey you try again later"
       end
     end
 
