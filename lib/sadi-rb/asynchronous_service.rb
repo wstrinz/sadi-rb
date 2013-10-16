@@ -1,5 +1,5 @@
 module SADI
-  module SynchronousService
+  module AsynchronousService
     include SADI::Converter
     include SADI::BaseService
 
@@ -25,6 +25,9 @@ module SADI
       end
 
       gr
+    end
+
+    def poll(task_id)
     end
   end
 end
