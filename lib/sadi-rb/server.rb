@@ -18,8 +18,13 @@ module SADI
       get_description(params[:service])
     end
 
+
     post '/services/:service' do
       handle_synchronous(params[:service])
+    end
+
+    get '/poll/:service/:job' do
+      poll_service(params[:service], params[:job])
     end
 
     get '/files/:service/:file' do
@@ -53,6 +58,9 @@ module SADI
         .reject{|f| f.content_type.size == 0}
         .map{|f| "#{f.content_type} (#{f.to_sym})"}
         .join('<br>')
+      end
+
+      def poll_service(service, job)
       end
     end
 

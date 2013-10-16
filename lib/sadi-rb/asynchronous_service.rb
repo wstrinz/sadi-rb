@@ -17,17 +17,43 @@ module SADI
       @classes
     end
 
-    def process_input(input, format)
-      gr = RDF::Graph.new
-      in_graph = parse_string(input,format)
-      input_objects(in_graph).each do |obj|
-        gr << process_object(in_graph, obj)
-      end
+    def jobs
+      # Yay not thread safety!
 
-      gr
+      @jobs ||= {}
     end
 
-    def poll(task_id)
+    def generate_job_id
+      # TODO better poll URLs     
+      
+      # "#{service_name}_#{Time.now.nsec.to_s(32)}"
+      Time.now.nsec.to_s(32)
+    end
+
+    def process_input(input, format)
+      job_id = generate_job_id
+      
+      raise "Job already exists (#{job_id})" if jobs[job_id]
+
+      jobs[job_id] = nil
+
+      Thread.new do
+
+        gr = RDF::Graph.new
+        in_graph = parse_string(input,format)
+
+        input_objects(in_graph).each do |obj|
+          gr << process_object(in_graph, obj)
+        end
+
+        jobs[job_id] = gr
+      end
+
+      job_id
+    end
+
+    def poll(job_id)
+      jobs[job_id]         
     end
   end
 end
