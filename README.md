@@ -83,6 +83,7 @@ Copyright (c) 2013 Will Strinz. See LICENSE.txt for
 further details.
 
 [synchronous]: http://sadiframework.org/content/how-sadi-works/synchronous-sadi-services/
+[asynchronous]: https://code.google.com/p/sadi/wiki/AsynchronousServices
 [demo service]: https://github.com/wstrinz/sadi-rb/blob/master/lib/sadi-rb/example_service.rb
 [SADI]: http://sadiframework.org
 [mygrid ontology]: http://www.mygrid.org.uk/tools/service-management/mygrid-ontology/
