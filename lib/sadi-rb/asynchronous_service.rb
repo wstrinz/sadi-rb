@@ -24,15 +24,15 @@ module SADI
     end
 
     def generate_job_id
-      # TODO better poll URLs     
-      
+      # TODO better poll URLs
+
       # "#{service_name}_#{Time.now.nsec.to_s(32)}"
       Time.now.nsec.to_s(32)
     end
 
-    def process_input(input, format)
+    def process_input(input, format, poll_base)
       job_id = generate_job_id
-      
+
       raise "Job already exists (#{job_id})" if jobs[job_id]
 
       jobs[job_id] = nil
@@ -49,11 +49,18 @@ module SADI
         jobs[job_id] = gr
       end
 
-      job_id
+      gr = RDF::Graph.new
+      out_class = output_classes.first
+      input_objects(parse_string(input,format)).each do |obj|
+        gr << RDF::Statement.new(obj, RDF.type, out_class)
+        gr << RDF::Statement.new(obj, RDF::RDFS.isDefinedBy, RDF::URI("#{poll_base}/#{job_id}"))
+      end
+
+      gr
     end
 
     def poll(job_id)
-      jobs[job_id]         
+      jobs[job_id]
     end
   end
 end

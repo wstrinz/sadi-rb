@@ -15,7 +15,7 @@ module SADI
     def reload_services
       @@services = {}
 
-      SADI::SynchronousService.classes.each do |service|
+      (SADI::SynchronousService.classes | SADI::AsynchronousService.classes).each do |service|
         if service.respond_to? 'service_name'
           name = service.service_name
           puts "Warning: service #{@@services[name]} already using name '#{name}', overwriting" if @@services[name]

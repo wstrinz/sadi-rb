@@ -41,9 +41,9 @@ module SADI
         svc = SADI.service_for(service)
         raise "no service exists with name '#{service}'" unless svc
         if svc.is_a? SynchronousService
-          rdf_response svc.process_input(request.body.read,request.content_type)
+          rdf_response svc.process_input(request.body.read, request.content_type)
         else
-          raise "process async"
+          rdf_response svc.process_input(request.body.read, request.content_type, "http://#{request.host_with_port}/poll/#{svc.service_name}")
         end
       end
 
@@ -71,11 +71,11 @@ module SADI
           result
         else
           redirect_poll(svc, job)
-        end 
+        end
       end
 
       def redirect_poll
-        "Hey you try again later"
+        raise "Hey you try again later"
       end
     end
 

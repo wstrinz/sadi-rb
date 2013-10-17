@@ -56,25 +56,47 @@ describe SADI::Server do
   context "content negotiation" do
     ['application/rdf+xml'].each do |format|
       describe "accepts #{format} (JRuby issues)", no_travis: true do
-        it {
+        it do
           header "Accept", format
           get '/services/hello'
 
           last_response.should be_ok
           last_response.content_type.should == format
-        }
+        end
       end
     end
 
     %w{text/turtle application/ld+json application/json}.each do |format|
       describe "accepts #{format}" do
-        it {
+        it do
           header "Accept", format
           get '/services/hello'
 
           last_response.should be_ok
           last_response.content_type.should == format
-        }
+        end
+      end
+    end
+  end
+
+  describe "async services" do
+    describe "basic get" do
+      it do
+        get 'services/hello_async'
+        last_response.should be_ok
+      end
+    end
+
+    describe "post" do
+      it "receives poll url" do
+        header "Accept", "text/turtle"
+        header "Content-type", "application/rdf+xml"
+
+        post '/services/hello_async', sample_input
+
+        last_response.should be_ok
+
+        last_response.body["rdf-schema#isDefinedBy"].should_not be nil
       end
     end
   end

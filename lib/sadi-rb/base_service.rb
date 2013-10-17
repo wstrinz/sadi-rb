@@ -21,12 +21,13 @@ module SADI
     end
 
     def input_objects(graph)
-      cl = input_classes.first
-      solutions = RDF::Query.execute(graph) do
-        pattern [:obj, RDF.type, cl]
-      end
+      input_classes.map do |cl|
+        solutions = RDF::Query.execute(graph) do
+          pattern [:obj, RDF.type, cl]
+        end
 
-      solutions.map(&:obj)
+        solutions.map(&:obj)
+      end.flatten
     end
 
     def input_classes
