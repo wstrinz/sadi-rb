@@ -98,6 +98,22 @@ describe SADI::Server do
 
         last_response.body["rdf-schema#isDefinedBy"].should_not be nil
       end
+
+      it "gets result from poll url" do
+        header "Accept", "text/turtle"
+        header "Content-type", "application/rdf+xml"
+
+        post '/services/hello_async', sample_input
+
+        last_response.should be_ok
+
+        poll_id = last_response.body.scan(%r{http://example.org/poll/hello_async/(\w+)}).first.first
+
+        get "/poll/hello_async/#{poll_id}"
+
+        last_response.should be_ok
+        last_response.body["Hello, Guy Incognito"].should_not be nil
+      end
     end
   end
 
