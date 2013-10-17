@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sadi-rb"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Will Strinz"]
-  s.date = "2013-10-15"
+  s.date = "2013-10-17"
   s.description = "Build and run SADI services with ruby-rdf and sinatra"
   s.email = "wstrinz@gmail.com"
   s.executables = ["sadi-rb"]
@@ -19,14 +19,18 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".travis.yml",
     "Gemfile",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "bin/sadi-rb",
     "lib/sadi-rb.rb",
+    "lib/sadi-rb/asynchronous_service.rb",
+    "lib/sadi-rb/base_service.rb",
     "lib/sadi-rb/converter.rb",
     "lib/sadi-rb/example_service.rb",
+    "lib/sadi-rb/example_service_async.rb",
     "lib/sadi-rb/server.rb",
     "lib/sadi-rb/services.rb",
     "lib/sadi-rb/synchronous_service.rb",
