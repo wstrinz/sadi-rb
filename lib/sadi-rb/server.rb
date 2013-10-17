@@ -43,6 +43,7 @@ module SADI
         if svc.is_a? SynchronousService
           rdf_response svc.process_input(request.body.read, request.content_type)
         else
+          status 202
           rdf_response svc.process_input(request.body.read, request.content_type, "http://#{request.host_with_port}/poll/#{svc.service_name}")
         end
       end
@@ -74,8 +75,13 @@ module SADI
         end
       end
 
-      def redirect_poll
-        raise "Hey you try again later"
+      def redirect_poll(svc, job)
+        status 302
+        retry_time = 10
+        headers \
+          "Pragma" => "sadi-please-wait = #{retry_time}",
+          "Location" => request.url
+
       end
     end
 

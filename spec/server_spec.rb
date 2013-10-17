@@ -80,11 +80,9 @@ describe SADI::Server do
   end
 
   describe "async services" do
-    describe "basic get" do
-      it do
-        get 'services/hello_async'
-        last_response.should be_ok
-      end
+    it "basic get" do
+      get 'services/hello_async'
+      last_response.should be_ok
     end
 
     describe "post" do
@@ -93,8 +91,7 @@ describe SADI::Server do
         header "Content-type", "application/rdf+xml"
 
         post '/services/hello_async', sample_input
-
-        last_response.should be_ok
+        last_response.status.should == 202
 
         last_response.body["rdf-schema#isDefinedBy"].should_not be nil
       end
@@ -105,7 +102,7 @@ describe SADI::Server do
 
         post '/services/hello_async', sample_input
 
-        last_response.should be_ok
+        last_response.status.should == 202
 
         poll_id = last_response.body.scan(%r{http://example.org/poll/hello_async/(\w+)}).first.first
 
@@ -114,12 +111,74 @@ describe SADI::Server do
         last_response.should be_ok
         last_response.body["Hello, Guy Incognito"].should_not be nil
       end
+
+      context "redirection" do
+        before :all do
+          @cl = Class.new do
+            extend SADI::AsynchronousService
+
+            def self.service_name
+              "my_async"
+            end
+
+            def self.service_description
+              ExampleServiceAsync.service_description
+            end
+
+            def self.service_owl
+              ExampleServiceAsync.service_owl
+            end
+
+            def self.process_object(input_graph, owl_object)
+              sleep(1)
+              ExampleServiceAsync.process_object(input_graph, owl_object)
+            end
+          end
+
+          SADI.reload_services
+        end
+
+        it "receives redirects" do
+          header "Accept", "text/turtle"
+          header "Content-type", "application/rdf+xml"
+
+          post '/services/my_async', sample_input
+
+          poll_id = last_response.body.scan(%r{http://example.org/poll/my_async/(\w+)}).first.first
+
+          get "/poll/my_async/#{poll_id}"
+
+          last_response.status.should == 302
+          # puts last_response.headers["Pragma"]
+          last_response.headers["Pragma"][/sadi-please-wait = \d+/].should_not be nil
+          last_response.headers["Location"].should == "http://example.org/poll/my_async/#{poll_id}"
+        end
+
+        it "eventually receives results" do
+          header "Accept", "text/turtle"
+          header "Content-type", "application/rdf+xml"
+
+          post '/services/my_async', sample_input.gsub("Guy Incognito", "Nick Danger")
+
+          poll_id = last_response.body.scan(%r{http://example.org/poll/my_async/(\w+)}).first.first
+
+          get "/poll/my_async/#{poll_id}"
+
+          last_response.status.should == 302
+
+          sleep 1
+
+          get "/poll/my_async/#{poll_id}"
+          last_response.body["Hello, Nick Danger"].should_not be nil
+        end
+      end
+
     end
   end
 
   describe "define new classes" do
     before do
-      @serv = Class.new do
+      @cl = Class.new do
         extend SADI::SynchronousService
 
         def self.service_name
