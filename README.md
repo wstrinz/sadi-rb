@@ -65,7 +65,7 @@ You also have access to the `parse_string(string, format)` method, inherited fro
 
 #### Asynchronous Services
 
-SADI also supports [asynchronous] services, which can be polled repeatedly until their results are available. To make a service asynchronous, you can simply extend the `SADI::AsynchronousService` module, and implement your service the same way you would a synchronous service. However beware that the implementation of asynchronous services is currently not thread safe or very well tested, so it may not work well on unless you're using MRI and Thin.
+SADI also supports [asynchronous] services, which can be polled repeatedly until their results are available. To make a service asynchronous, you can simply extend the `SADI::AsynchronousService` module, and implement your service the same way you would a synchronous service. However beware that the implementation of asynchronous services is currently not thread safe or very well tested, so it may not work well unless you're using MRI and Thin.
 
 ## Contributing to sadi-rb
 

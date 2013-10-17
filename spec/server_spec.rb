@@ -108,6 +108,11 @@ describe SADI::Server do
 
         get "/poll/hello_async/#{poll_id}"
 
+        if last_response.status == 302
+          sleep(5)
+          get "/poll/hello_async/#{poll_id}"
+        end
+
         last_response.should be_ok
         last_response.body["Hello, Guy Incognito"].should_not be nil
       end
@@ -149,6 +154,7 @@ describe SADI::Server do
           get "/poll/my_async/#{poll_id}"
 
           last_response.status.should == 302
+
           # puts last_response.headers["Pragma"]
           last_response.headers["Pragma"][/sadi-please-wait = \d+/].should_not be nil
           last_response.headers["Location"].should == "http://example.org/poll/my_async/#{poll_id}"
@@ -169,6 +175,12 @@ describe SADI::Server do
           sleep 1
 
           get "/poll/my_async/#{poll_id}"
+
+          if last_response.status == 302
+            sleep(5)
+            get "/poll/my_async/#{poll_id}"
+          end
+
           last_response.body["Hello, Nick Danger"].should_not be nil
         end
       end

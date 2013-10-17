@@ -82,6 +82,7 @@ module SADI
           "Pragma" => "sadi-please-wait = #{retry_time}",
           "Location" => request.url
 
+        ""
       end
     end
 
