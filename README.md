@@ -11,7 +11,7 @@ or clone the repository and run `rake install` for the latest version
 
 Write [SADI] Services in Ruby, using [ruby-rdf], then host them in a [Sinatra] application.
 
-Currently only support for [synchronous] services is implemented.
+Currently only support for [synchronous] services are fully supported, although an experimental [asynchronous] class is available.
 
 ### Usage
 
@@ -26,6 +26,8 @@ SADI::Server.run!
 ```
 
 ### Writing your own services
+
+#### Synchronous
 
 To create a [synchronous] service, simply extend the `SADI::SynchronousService` module and implement the interface methods it requires;
 
@@ -60,6 +62,10 @@ end
 Although SADI can theoretically use any vocabulary for its service description, the gem internals currently require that you use the [mygrid ontology] in implementing your `service_description` method.
 
 You also have access to the `parse_string(string, format)` method, inherited from [SADI::Converter](https://github.com/wstrinz/sadi-rb/blob/master/lib/sadi-rb/converter.rb) through `SADI::SynchronousService`, which can be used create a RDF::Graph from a serialized string. The `format` argument should be a symbol for an `RDF::Format` class, for example `:ttl` or `:rdfxml`.
+
+#### Asynchronous Services
+
+SADI also supports [asynchronous] services, which can be polled repeatedly until their results are available. To make a service asynchronous, you can simply extend the `SADI::AsynchronousService` module, and implement your service the same way you would a synchronous service. However beware that the implementation of asynchronous services is currently not thread safe or very well tested, so it may not work well on unless you're using MRI and Thin.
 
 ## Contributing to sadi-rb
 
