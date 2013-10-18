@@ -69,15 +69,20 @@ module SADI
         svc = SADI.service_for(service)
         result = svc.poll(job)
         if result.is_a?(RDF::Graph) || result.is_a?(RDF::Repository)
+          svc.remove_result(job)
           result
+        elsif
+          result.is_a? Fixnum
+          redirect_poll(svc, job, result)
         else
-          redirect_poll(svc, job)
+          not_found do
+            "unknown poll address"
+          end
         end
       end
 
-      def redirect_poll(svc, job)
+      def redirect_poll(svc, job, retry_time = 10)
         status 302
-        retry_time = 10
         headers \
           "Pragma" => "sadi-please-wait = #{retry_time}",
           "Location" => request.url

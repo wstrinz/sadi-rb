@@ -35,7 +35,7 @@ module SADI
 
       raise "Job already exists (#{job_id})" if jobs[job_id]
 
-      jobs[job_id] = nil
+      jobs[job_id] = wait_time
 
       Thread.new do
 
@@ -61,6 +61,18 @@ module SADI
 
     def poll(job_id)
       jobs[job_id]
+    end
+
+    def remove_result(job_id)
+      if jobs[job_id].is_a? Fixnum
+        puts "WARNING: Tried to remove unfinished job"
+      end
+
+      @jobs[job_id] = nil
+    end
+
+    def wait_time
+      10
     end
   end
 end

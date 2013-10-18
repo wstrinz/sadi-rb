@@ -183,6 +183,58 @@ describe SADI::Server do
 
           last_response.body["Hello, Nick Danger"].should_not be nil
         end
+
+        it "removes response objects after they've been served" do
+          header "Accept", "text/turtle"
+          header "Content-type", "application/rdf+xml"
+
+          post '/services/my_async', sample_input.gsub("Guy Incognito", "Nick Danger")
+          poll_id = last_response.body.scan(%r{http://example.org/poll/my_async/(\w+)}).first.first
+
+          get "/poll/my_async/#{poll_id}"
+          sleep 1
+
+          get "/poll/my_async/#{poll_id}"
+
+          if last_response.status == 302
+            sleep(5)
+            get "/poll/my_async/#{poll_id}"
+          end
+
+          last_response.body["Hello, Nick Danger"].should_not be nil
+
+          get "/poll/my_async/#{poll_id}"
+          last_response.status.should == 404
+        end
+
+        it "handles multiple requests" do
+          header "Accept", "text/turtle"
+          header "Content-type", "application/rdf+xml"
+
+          5.times do
+            Thread.new do
+              post '/services/my_async', sample_input.gsub("Guy Incognito", "Nick Danger")
+              poll_id = last_response.body.scan(%r{http://example.org/poll/my_async/(\w+)}).first.first
+              puts poll_id
+              get "/poll/my_async/#{poll_id}"
+              sleep 1
+
+              get "/poll/my_async/#{poll_id}"
+
+              5.times do
+                if last_response.status == 302
+                  sleep(5)
+                  get "/poll/my_async/#{poll_id}"
+                end
+              end
+
+              last_response.body["Hello, Nick Danger"].should_not be nil
+
+              get "/poll/my_async/#{poll_id}"
+              last_response.status.should == 404
+            end
+          end
+        end
       end
 
     end
